@@ -8,8 +8,8 @@ function render_blog(path) {
 
 function sortFunction(a, b) {
     if (a[0] === b[0]) {
-        if (a[2] < b[2]) return -1;
-        if (a[2] > b[2]) return 1;
+        if (a[2] < b[2]) return 1;
+        if (a[2] > b[2]) return -1;
         return 0;
     }
     else if (a[0] == "Other:") return 1;
