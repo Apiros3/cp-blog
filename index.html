@@ -1,0 +1,48 @@
+<html>
+<head>
+    <title>Apiros3's Blog</title>
+    <meta charset="utf-8">
+    <link rel="icon" type="image/x-icon" href="logos/favicon.jpeg">
+    <style>
+        @import url('https://fonts.cdnfonts.com/css/hubot-sans');
+    </style>
+    <script src="listify.js"></script>
+    <script src="render_blog.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="header-child">
+            <a href = "https://apiros3.github.io/" class="page-title">
+                <b>Apiros3 HP</b></a>
+            <a class="page-title">
+                <b> / </b>
+            </a>
+            <span class="page-title" onclick="render_blog('default')"><b>Blog Page</b></span>
+        </div>
+        <div class="header-child right15">
+            <!-- links -->
+            <a href="https://github.com/Apiros3" class="link"><img src="logos/github.png"></a>
+            <a href="https://twitter.com/Apiros3" class="link"><img src="logos/twitter.png"></a>
+            
+        </div>
+    </header>
+    <div class="main">
+        <div class="blog-list" id="list">
+            BLOG-LIST LOAD FAILED
+        </div>
+        <div class="blog-content" id="content">
+        </div>
+    </div>
+    <footer>
+        <div class="footer-text">
+            Repo Link:
+            <a href="https://github.com/Apiros3/blog" class ="repo">Apiros3/blog</a> 
+        </div>
+    </footer>
+    <script>
+        listify();
+        initial_blog_load();
+    </script>
+</body>
+</html>

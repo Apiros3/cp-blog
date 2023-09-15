@@ -1,0 +1,5 @@
+git pull
+python3 blogify.py
+git add -A 
+git commit -m "new post!"
+git push 

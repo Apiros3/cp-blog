@@ -1,0 +1,44 @@
+body {
+    color: #ecf2f8;
+    font-family: 'Hubot-Sans 400', sans-serif;
+    padding: 20px 25px;
+}
+
+h2 {
+    padding: 0 10px;
+}
+h3 {
+    padding: 0 10px;
+}
+p {
+    padding: 0 20px;
+}
+
+h1:after
+{
+    content:' ';
+    display:block;
+    border:1px solid #89929b;
+}
+
+h2:after
+{
+    content:' ';
+    display:block;
+    border:1px solid #89929b;
+}
+
+h3:after
+{
+    content:' ';
+    display:block;
+    border:1px solid #89929b;
+}
+
+a {
+    color: #77bdfb;
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: underline;
+}
