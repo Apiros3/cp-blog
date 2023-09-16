@@ -5,7 +5,7 @@ var genre = [];
 
 function listify() {
 
-    lst.push("競プロ用ブログ環境");
+    lst.push("競プロ用ブログページ");
     update.push("2023-09-16")
     genre.push("制作物:")
 
