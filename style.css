@@ -128,7 +128,7 @@ a.repo:hover {
 }
 img {
     height: 60%;
-    width: auto;
+    /* width: auto; */
 }
 
 a.link {
