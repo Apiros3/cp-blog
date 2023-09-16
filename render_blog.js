@@ -10,6 +10,8 @@ function sortFunction(a, b) {
     if (a[0] === b[0]) {
         if (a[2] < b[2]) return 1;
         if (a[2] > b[2]) return -1;
+        if (a[1] < b[1]) return -1;
+        if (a[1] > b[1]) return 1;
         return 0;
     }
     else if (a[0] == "Other:") return 1;
@@ -61,6 +63,9 @@ function initial_blog_load() {
     if (searchParams.has('blog')) {
         render_blog(searchParams.get('blog'));
     }
+    // else if (searchParams.has('id')) {
+    //     render_blog(a[searchParams.get('id')][1]);
+    // }
     else {
         render_blog('default');
     }
