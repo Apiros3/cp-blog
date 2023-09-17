@@ -24,15 +24,15 @@
 <li>クエリ2: \(s, k\)が与えらえるので、#\({u \in f(s) : g(u) = k}\)を出力</li>
 </ul>
 <p>クエリ1の処理は通常のUnionFindと同様 <br>
-また、クエリ2を処理することを考えると、\(h(s,k) = #{u \in f(s) : g(u) = k}\)とした時、集合のマージ時：</p>
+また、クエリ2を処理することを考えると、\(h(s,k) =\) #\({u \in f(s) : g(u) = k}\)とした時、集合のマージ時：</p>
 <ul>
-<li>\(root(s_1) = root(s_2)\) : <ul>
-<li>\( h(s,k)<em>{new} = h(s,k)</em>{old} \)</li>
+<li>\(root(s_1) = root(s_2)\) : <br><ul>
+<li>\({h(s,k)}<em>{new} = {h(s,k)}</em>{old}\)</li>
 </ul>
 </li>
-<li>\(root(s_1) \neq root(s_2)\) :<ul>
-<li>\(h(s,k)<em>{new} = h(s,k)</em>{old} : s \neq s_1,s_2\)</li>
-<li>\(h(s,k)<em>{new} = h(s_1,k)</em>{old}+h(s_2,k)_{old} : s = s_1,s_2\)</li>
+<li>\(root(s_1) \neq root(s_2)\) :<br><ul>
+<li>\({h(s,k)}<em>{new} = {h(s,k)}</em>{old} : s \neq s_1,s_2\)</li>
+<li>\({h(s,k)}<em>{new} = {h(s_1,k)}</em>{old}+{h(s_2,k)}_{old} : s = s_1,s_2\)</li>
 </ul>
 </li>
 </ul>
