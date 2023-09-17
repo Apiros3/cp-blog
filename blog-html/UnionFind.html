@@ -1,0 +1,44 @@
+
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css" integrity="sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js" integrity="sha384-y23I5Q6l+B6vatafAwxRu/0oK/79VlbSz7Q9aiSZUvyWYIYsd+qj+o24G5ZU2zJz" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js" integrity="sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script>
+    <link rel="stylesheet" href="highlight/styles/github-dark-dimmed.min.css">
+    <script src="highlight/highlight.min.js"></script>
+</head>                           
+<h1>UnionFind典型</h1>
+<p>UnionFindの良典型問題集：</p>
+<h2><a href="https://atcoder.jp/contests/abc183/tasks/abc183_f">ABC183F</a></h2>
+<blockquote>
+<p>\(N, Q \leq 10^5\)</p>
+</blockquote>
+<p>始めに、\(\forall s \in [1,N], f(s) = {s}\) <br>
+また、\(g : [1:N] \rightarrow [1:N]\)が渡される </p>
+<p>2種類のクエリを処理する問題</p>
+<ul>
+<li>クエリ1: \(s_1, s_2 \in [1:N]\)が与えられるので、\(f(s_1)とf(s_2)をf(s_1) \cup f(s_2)\)の値に置き換える(再定義する)</li>
+<li>クエリ2: \(s, k\)が与えらえるので、\(#{u \in f(s) : g(u) = k}\)を出力</li>
+</ul>
+<p>クエリ1の処理は通常のUnionFindと同様 <br>
+また、クエリ2を処理することを考えると、\(h(s,k) = #{u \in f(s) : g(u) = k}\)とした時、集合のマージ時：</p>
+<ul>
+<li>\(root(s_1) = root(s_2)\) : <ul>
+<li>\(h(s,k)<em>{new} = h(s,k)</em>{old}\)</li>
+</ul>
+</li>
+<li>\(root(s_1) \neq root(s_2)\) :<ul>
+<li>\(h(s,k)<em>{new} = h(s,k)</em>{old} : s \neq s_1,s_2\)</li>
+<li>\(h(s,k)<em>{new} = h(s_1,k)</em>{old}+h(s_2,k)_{old} : s = s_1,s_2\)</li>
+</ul>
+</li>
+</ul>
+<p>\(h(s,k)\)の中で値が0でない\(k\)は高々\(|f(s)|\)なので、vector\&lt;map&gt;などで\(h\)を保持すると、処理が簡単です。また、merge時、小さい方の集合を大きい方に足すことで処理を高速化できます（ここが典型ポイント）</p>
+<p>これでクエリ2を高速に処理できます(各クエリ\(O(logN)\)です)</p>
+<script>
+    init();
+    hljs.highlightAll();
+</script>

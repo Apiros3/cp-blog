@@ -5,6 +5,10 @@ var genre = [];
 
 function listify() {
 
+    lst.push("UnionFind");
+    update.push("2023-09-17")
+    genre.push("典型:")
+
     lst.push("競プロ用ブログページ");
     update.push("2023-09-16")
     genre.push("制作物:")
