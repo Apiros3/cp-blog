@@ -18,10 +18,10 @@ UnionFindの良典型問題集：
 また、クエリ2を処理することを考えると、$h(s,k) =$ #$\{u \in f(s) : g(u) = k\}$とした時、集合のマージ時：
 
 * $root(s_1) = root(s_2)$ : <br>
-    * ${h(s,k)}_{new} =$ $ {h(s,k)}_{old}$
+    * ${h(s,k)}_{new} = {h(s,k)}_{old}$
 * $root(s_1) \neq root(s_2)$ :<br>
-    * ${h(s,k)}_{new} =$ $ {h(s,k)}_{old} : s \neq s_1,s_2$
-    * ${h(s,k)}_{new} =$ $ {h(s_1,k)}_{old}+{h(s_2,k)}_{old} : s = s_1,s_2$
+    * ${h(s,k)}_{new} = {h(s,k)}_{old} : s \neq s_1,s_2$
+    * ${h(s,k)}_{new} = {h(s_1,k)}_{old}+{h(s_2,k)}_{old} : s = s_1,s_2$
 
 $h(s,k)$の中で値が0でない$k$は高々$|f(s)|$なので、vector\<map\>などで$h$を保持すると、処理が簡単です。また、merge時、小さい方の集合を大きい方に足すことで処理を高速化できます（ここが典型ポイント）
 
