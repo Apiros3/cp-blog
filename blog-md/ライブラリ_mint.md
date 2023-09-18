@@ -26,7 +26,7 @@ classが呼ばれた時の初期化はpublic内に：
 mint(long long x = 0) : x((x%mintmod + mintmod)%mintmod) {}
 ```
 
-負の数でも$0 \leq i < mod$となるようにしっかり処理を行う。
+とする。負の数でも$0 \leq i < mod$となるようにしっかり処理を行う。
 
 ### Helper Functions
 

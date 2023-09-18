@@ -22,7 +22,7 @@
 <p>を定義しておく。</p>
 <p>classが呼ばれた時の初期化はpublic内に：</p>
 <p><pre><code>mint(long long x = 0) : x((x%mintmod + mintmod)%mintmod) {}</code></pre></p>
-<p>負の数でも\(0 \leq i &lt; mod\)となるようにしっかり処理を行う。</p>
+<p>とする。負の数でも\(0 \leq i &lt; mod\)となるようにしっかり処理を行う。</p>
 <h3>Helper Functions</h3>
 <p>\(a^b\) mod \(M\)を高速に求めてくれる関数、modpow_sを用意する。modの値が大きくなる可能性があるので、積の結果が64bitを超えてもmodを取るとoverflowなどのバグが発生しない関数を使います。</p>
 <p><pre><code>long long modmul(unsigned long long a, unsigned long long b, unsigned long long M) {
