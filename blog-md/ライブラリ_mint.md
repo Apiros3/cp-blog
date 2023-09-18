@@ -11,7 +11,7 @@ long longでやることと同じ操作をする際に、勝手にmodを取っ�
 long long mintmod = 998244353;
 ```
 
-としておく。また、`class mint`を定義しておく。
+としておく。また、class mintを定義しておく。
 また、privateの中に
 
 ```
@@ -142,7 +142,7 @@ friend std::ostream& operator<<(std::ostream& os, const mint& m) {
 
 ## 全体コード：
 
-あとはmain関数内でmintmodを書き直したりすれば、`mint x = 3;`などで定義できます。
+あとはmain関数内でmintmodを書き直したりすれば、mint x = 3;などで定義できます。
 
 ```
 long long mintmod = 998244353;
