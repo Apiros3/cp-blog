@@ -1,0 +1,188 @@
+
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css" integrity="sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js" integrity="sha384-y23I5Q6l+B6vatafAwxRu/0oK/79VlbSz7Q9aiSZUvyWYIYsd+qj+o24G5ZU2zJz" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js" integrity="sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script>
+    <link rel="stylesheet" href="highlight/styles/github-dark-dimmed.min.css">
+    <script src="highlight/highlight.min.js"></script>
+</head>                           
+<h1>mint (modint)ライブラリ</h1>
+<h2>目標：</h2>
+<p>long longでやることと同じ操作をする際に、勝手にmodを取って欲しい</p>
+<h2>実装：</h2>
+<h3>初期化：</h3>
+<p><pre><code>long long mintmod = 998244353;</code></pre></p>
+<p>としておく。また、<pre><code>class mint</code></pre>を定義しておく。
+また、privateの中に</p>
+<p><pre><code>long long x;</code></pre></p>
+<p>を定義しておく。</p>
+<p>classが呼ばれた時の初期化は：</p>
+<p><pre><code>mint(long long x = 0) : x((x%mintmod + mintmod)%mintmod) {}</code></pre></p>
+<p>負の数でも\(0 \leq i &lt; mod\)となるようにしっかり処理を行う。</p>
+<h3>Helper Functions</h3>
+<p>\(a^b mod M\)を高速に求めてくれる関数、modpow_sを用意する。modの値が大きくなる可能性があるので、積の結果が64bitを超えてもmodを取るとoverflowなどのバグが発生しない関数を使います。</p>
+<p><pre><code>long long modmul(unsigned long long a, unsigned long long b, unsigned long long M) {
+    long long ret = a * b - M * (unsigned long long)(1.L / M * a * b);
+    return ret + M * (ret &lt; 0) - M * (ret &gt;= (unsigned long long)M);
+}
+long long modpow_s(long long btmn, long long topn, long long modn) {
+    long long ret_num = 1;
+    btmn%=modn;
+    for(; topn; topn/=2, btmn=modmul(btmn,btmn,modn))
+        if (topn &amp; 1ll) ret_num=modmul(ret_num,btmn,modn);
+    return ret_num%modn;
+}</code></pre></p>
+<p>Overflow等でバグが発生しない<a href="https://github.com/kth-competitive-programming/kactl/blob/main/doc/modmul-proof.md">証明</a>です。</p>
+<h3>負の数を返す関数</h3>
+<p><pre><code>mint operator-() const {
+    return mint(-x);
+}</code></pre></p>
+<h3>足し算・引き算・掛け算</h3>
+<p><pre><code>mint&amp; operator+=(const mint&amp; a) {
+    if ((x += a.x) &gt;= mintmod) x -= mintmod;
+    return *this;
+}
+mint&amp; operator-=(const mint&amp; a) {
+    if ((x += mintmod - a.x) &gt;= mintmod) x -= mintmod;
+    return *this;
+}
+mint&amp; operator*=(const mint&amp; a) {
+    x = modmul(x, a.x, mintmod);
+    return *this;
+}
+mint operator+(const mint&amp; a) const {
+    mint res(*this);
+    return res += a;
+}
+mint operator-(const mint&amp; a) const {
+    mint res(*this);
+    return res -= a;
+}
+mint operator*(const mint&amp; a) const {
+    mint res(*this);
+    return res *= a;
+}</code></pre></p>
+<p>掛け算にはしっかり上記で定義したmodmul関数を使います。他の人との実装はここが異なっているかもしれません<s>一般的には素数mod且つ32bit以内に収まるものを使うことを想定するだけでよいので充分という話はある</s></p>
+<h3>冪数・逆元</h3>
+<p><pre><code>template&lt;typename T&gt;
+mint pow(T t) const {
+    if (!t) return 1;
+    mint a = pow(t &gt;&gt; 1);
+    a *= a;
+    if (t &amp; 1) a *= *this;
+    return a;
+}
+mint inv() const {
+    return pow(mintmod-2);
+}</code></pre></p>
+<h3>割り算</h3>
+<p>定義された逆元を使って割り算を行います</p>
+<p><pre><code>mint&amp; operator/=(const mint&amp; a) {
+    return (*this) *= a.inv();
+}
+mint operator/(const mint&amp; a) const {
+    mint res(*this);
+    return res/=a;
+}</code></pre></p>
+<h3>同値確認</h3>
+<p>同じmint、またはlong longなどの整数型と値を比べれるようにします（\(== 0\) などをしたいかもしれないので）</p>
+<p><pre><code>mint operator==(const mint&amp; a) {
+    return (*this).x == a.x;
+}
+template &lt;typename T&gt;
+mint operator==(const T &amp;a) {
+    return (*this).x == a;
+}</code></pre></p>
+<h3>出力</h3>
+<p><pre><code>friend std::ostream&amp; operator&lt;&lt;(std::ostream&amp; os, const mint&amp; m) {
+    os &lt;&lt; m.x;
+    return os;
+}</code></pre></p>
+<h2>全体コード：</h2>
+<p>あとはmain関数内でmintmodを書き直したりすれば、<pre><code>mint x = 3;</code></pre>などで定義できます。</p>
+<p>```
+long long mintmod = 998244353;
+class mint {
+private:
+    long long x;
+    long long modmul(unsigned long long a, unsigned long long b, unsigned long long M) {
+        long long ret = a * b - M * (unsigned long long)(1.L / M * a * b);
+        return ret + M * (ret &lt; 0) - M * (ret &gt;= (unsigned long long)M);
+    }
+    long long modpow_s(long long btmn, long long topn, long long modn) {
+        long long ret_num = 1;
+        btmn%=modn;
+        for(; topn; topn/=2, btmn=modmul(btmn,btmn,modn))
+            if (topn &amp; 1ll) ret_num=modmul(ret_num,btmn,modn);
+        return ret_num%modn;
+    } 
+public:
+    mint(long long x = 0) : x((x%mintmod + mintmod)%mintmod) {}
+    mint operator-() const {
+        return mint(-x);
+    }
+    mint&amp; operator+=(const mint&amp; a) {
+        if ((x += a.x) &gt;= mintmod) x -= mintmod;
+        return <em>this;
+    }
+    mint&amp; operator-=(const mint&amp; a) {
+        if ((x += mintmod - a.x) &gt;= mintmod) x -= mintmod;
+        return </em>this;
+    }
+    mint&amp; operator<em>=(const mint&amp; a) {
+        x = modmul(x, a.x, mintmod);
+        return </em>this;
+    }
+    mint operator+(const mint&amp; a) const {
+        mint res(<em>this);
+        return res += a;
+    }
+    mint operator-(const mint&amp; a) const {
+        mint res(</em>this);
+        return res -= a;
+    }
+    mint operator<em>(const mint&amp; a) const {
+        mint res(</em>this);
+        return res <em>= a;
+    }
+    template<typename T>
+    mint pow(T t) const {
+        if (!t) return 1;
+        mint a = pow(t &gt;&gt; 1);
+        a </em>= a;
+        if (t &amp; 1) a <em>= </em>this;
+        return a;
+    }
+    mint inv() const {
+        return pow(mintmod-2);
+    }
+    mint&amp; operator/=(const mint&amp; a) {
+        return (<em>this) </em>= a.inv();
+    }
+    mint operator/(const mint&amp; a) const {
+        mint res(*this);
+        return res/=a;
+    }</p>
+<pre><pre><code>mint operator==(const mint&amp; a) {
+    return (*this).x == a.x;
+}
+template &lt;typename T&gt;
+mint operator==(const T &amp;a) {
+    return (*this).x == a;
+}
+
+friend std::ostream&amp; operator&lt;&lt;(std::ostream&amp; os, const mint&amp; m) {
+    os &lt;&lt; m.x;
+    return os;
+}
+</code></pre></pre>
+<p>};
+```</p>
+<script>
+    init();
+    hljs.highlightAll();
+</script>

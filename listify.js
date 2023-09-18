@@ -5,6 +5,10 @@ var genre = [];
 
 function listify() {
 
+    lst.push("mint");
+    update.push("2023-09-19")
+    genre.push("ライブラリ:")
+
     lst.push("UnionFind");
     update.push("2023-09-17")
     genre.push("典型:")
