@@ -20,11 +20,11 @@
 また、privateの中に</p>
 <p><pre><code>long long x;</code></pre></p>
 <p>を定義しておく。</p>
-<p>classが呼ばれた時の初期化は：</p>
+<p>classが呼ばれた時の初期化はpublic内に：</p>
 <p><pre><code>mint(long long x = 0) : x((x%mintmod + mintmod)%mintmod) {}</code></pre></p>
 <p>負の数でも\(0 \leq i &lt; mod\)となるようにしっかり処理を行う。</p>
 <h3>Helper Functions</h3>
-<p>\(a^b mod M\)を高速に求めてくれる関数、modpow_sを用意する。modの値が大きくなる可能性があるので、積の結果が64bitを超えてもmodを取るとoverflowなどのバグが発生しない関数を使います。</p>
+<p>\(a^b\) mod \(M\)を高速に求めてくれる関数、modpow_sを用意する。modの値が大きくなる可能性があるので、積の結果が64bitを超えてもmodを取るとoverflowなどのバグが発生しない関数を使います。</p>
 <p><pre><code>long long modmul(unsigned long long a, unsigned long long b, unsigned long long M) {
     long long ret = a * b - M * (unsigned long long)(1.L / M * a * b);
     return ret + M * (ret &lt; 0) - M * (ret &gt;= (unsigned long long)M);
@@ -38,6 +38,7 @@ long long modpow_s(long long btmn, long long topn, long long modn) {
 }</code></pre></p>
 <p>Overflow等でバグが発生しない<a href="https://github.com/kth-competitive-programming/kactl/blob/main/doc/modmul-proof.md">証明</a>です。</p>
 <h3>負の数を返す関数</h3>
+<p>以下項目は全てpublic関数です。</p>
 <p><pre><code>mint operator-() const {
     return mint(-x);
 }</code></pre></p>
@@ -102,86 +103,8 @@ mint operator==(const T &amp;a) {
     os &lt;&lt; m.x;
     return os;
 }</code></pre></p>
-<h2>全体コード：</h2>
-<p>あとはmain関数内でmintmodを書き直したりすれば、mint x = 3;などで定義できます。</p>
-<p>```
-long long mintmod = 998244353;
-class mint {
-private:
-    long long x;
-    long long modmul(unsigned long long a, unsigned long long b, unsigned long long M) {
-        long long ret = a * b - M * (unsigned long long)(1.L / M * a * b);
-        return ret + M * (ret &lt; 0) - M * (ret &gt;= (unsigned long long)M);
-    }
-    long long modpow_s(long long btmn, long long topn, long long modn) {
-        long long ret_num = 1;
-        btmn%=modn;
-        for(; topn; topn/=2, btmn=modmul(btmn,btmn,modn))
-            if (topn &amp; 1ll) ret_num=modmul(ret_num,btmn,modn);
-        return ret_num%modn;
-    } 
-public:
-    mint(long long x = 0) : x((x%mintmod + mintmod)%mintmod) {}
-    mint operator-() const {
-        return mint(-x);
-    }
-    mint&amp; operator+=(const mint&amp; a) {
-        if ((x += a.x) &gt;= mintmod) x -= mintmod;
-        return <em>this;
-    }
-    mint&amp; operator-=(const mint&amp; a) {
-        if ((x += mintmod - a.x) &gt;= mintmod) x -= mintmod;
-        return </em>this;
-    }
-    mint&amp; operator<em>=(const mint&amp; a) {
-        x = modmul(x, a.x, mintmod);
-        return </em>this;
-    }
-    mint operator+(const mint&amp; a) const {
-        mint res(<em>this);
-        return res += a;
-    }
-    mint operator-(const mint&amp; a) const {
-        mint res(</em>this);
-        return res -= a;
-    }
-    mint operator<em>(const mint&amp; a) const {
-        mint res(</em>this);
-        return res <em>= a;
-    }
-    template<typename T>
-    mint pow(T t) const {
-        if (!t) return 1;
-        mint a = pow(t &gt;&gt; 1);
-        a </em>= a;
-        if (t &amp; 1) a <em>= </em>this;
-        return a;
-    }
-    mint inv() const {
-        return pow(mintmod-2);
-    }
-    mint&amp; operator/=(const mint&amp; a) {
-        return (<em>this) </em>= a.inv();
-    }
-    mint operator/(const mint&amp; a) const {
-        mint res(*this);
-        return res/=a;
-    }</p>
-<pre><pre><code>mint operator==(const mint&amp; a) {
-    return (*this).x == a.x;
-}
-template &lt;typename T&gt;
-mint operator==(const T &amp;a) {
-    return (*this).x == a;
-}
-
-friend std::ostream&amp; operator&lt;&lt;(std::ostream&amp; os, const mint&amp; m) {
-    os &lt;&lt; m.x;
-    return os;
-}
-</code></pre></pre>
-<p>};
-```</p>
+<h2>使い方：</h2>
+<p>main関数内でmintmodを書き直したりすれば、mint x = 3;などで定義できます。</p>
 <script>
     init();
     hljs.highlightAll();
